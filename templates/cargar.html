@@ -1,0 +1,58 @@
+{% extends 'plantilla.html'%}
+{% block head %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+                /* Estilo predeterminado para los enlaces no visitados */
+        a {
+            text-decoration: none; /* Elimina el subrayado */
+            color: inherit; /* Hereda el color del texto de su contenedor */
+        }
+
+        /* Estilo para los enlaces cuando el cursor pasa sobre ellos */
+        a:hover {
+            color: white; /* Cambia el color del texto a blanco en el hover */
+        }
+        h{
+            padding: 35px;
+            display: block;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="contenido-principal">
+        <h2> Cargar elemento</h2>
+        <div class="container mt-5">
+            <form action="/agregar" method="post">
+                <div class="form-group">
+                    <label for="nombre">producto:</label>
+                    <input type="text" class="form-control" name="producto" required>
+                </div>
+                <div class="form-group">
+                    <label for="nombre">Marca:</label>
+                    <input type="text" class="form-control" name="marca">
+                </div>
+                <div class="form-group">
+                    <label for="stock">Stock:</label>
+                    <input type="text" class="form-control" name="stock" required>
+                </div>
+                <div class="form-group">
+                    <label for="deposito">Ubicacion: </label>
+                    <select name="deposito" id="" class="form-control">
+                        <option value="CAU">agt 1</option>
+                        <option value="Catastro">agt 2</option>
+                        <option value="Libertad">agt 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="modelo">Nota:</label>
+                    <input type="text" class="form-control" name="nota">
+
+                </div>
+                <button type="submit" class="btn btn-primary">Cargar</button>
+                <a href="/inventario" class="btn btn-primary">Ver inventario</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Estilos para el menú lateral */
+        .menu-lateral {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #333; /* Color de fondo del menú */
+            color: white; /* Color del texto en el menú */
+            padding: 20px; /* Espaciado interno */
+        }
+
+        /* Estilos para los elementos del menú */
+        .menu-item {
+            margin-bottom: 10px; /* Espaciado entre elementos */
+            cursor: pointer; /* Cambia el cursor a mano al pasar sobre "Inventario" */
+        }
+
+        /* Estilos para los elementos del menú secundario (subdirecciones) */
+        .submenu-item {
+            margin-left: 20px; /* Espaciado para subdirecciones */
+            display: none; /* Inicialmente oculto */
+        }
+
+        /* Animación para mostrar elementos de menú secundario al pasar el mouse sobre "Inventario" */
+        .menu-item:hover .submenu-item {
+            display: block;
+        }
+        .logo {
+            position: absolute;
+            bottom: 40px;
+            left: 45px;
+            width: 140px;
+            filter: grayscale(500%); /* Ajusta el tamaño de la imagen */
+        }
+        
+
+                /* Estilo predeterminado para los enlaces no visitados */
+        a {
+            text-decoration: none; /* Elimina el subrayado */
+            color: inherit; /* Hereda el color del texto de su contenedor */
+        }
+
+        /* Estilo para los enlaces cuando el cursor pasa sobre ellos */
+        a:hover {
+            color: white; /* Cambia el color del texto a blanco en el hover */
+        }
+        .contenido-principal {
+            margin-left: 250px; /* Ancho del menú lateral */
+            padding: 20px;
+        }
+    </style>
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+    <div class="menu-lateral">
+        <h4>inventario GC</h4>
+        <a href="/agregar"><div class="menu-item">Cargar</div></a>
+        <div class="menu-item">
+            <a href="/">Inventario</a>
+            <a href="/?search=agt 1"><div class="submenu-item">agt 1</div></a>
+            <a href="/?search=agt 2"><div class="submenu-item">agt 2</div></a>
+            <a href="/?search=agt 3"><div class="submenu-item">agt 3</div></a>
+        </div>
+        <a href="/estadisticas"><div class="menu-item">Estadísticas</div></a>
+        
+        <img src="{{ url_for('static', filename= 'img/gc-logo.png') }}" class="logo">
+    </div>
+
+    {% block content %}
+
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Agregar enlaces a los archivos CSS y JS de Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <form action="/" method="post">
+            <div class="form-group">
+                <label for="nombre">Tipo:</label>
+                <input type="text" class="form-control" name="tipo">
+            </div>
+            <div class="form-group">
+                <label for="nombre">Marca:</label>
+                <input type="text" class="form-control" name="nombre">
+            </div>
+            <div class="form-group">
+                <label for="modelo">Modelo:</label>
+                <input type="text" class="form-control" name="modelo">
+            </div>
+            <div class="form-group">
+                <label for="nserie">Nº serie:</label>
+                <input type="text" class="form-control" name="nserie">
+            </div>
+            <div class="form-group">
+                <label for="stock">Stock:</label>
+                <input type="text" class="form-control" name="stock">
+            </div>
+            <button type="submit" class="btn btn-primary">Cargar</button>
+            <a href="/estadisticas" class="btn btn-primary">Estadisticas</a>
+        </form>
+
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Numero de serie</th>
+                    <th>Stock</th>
+                    <th>Control</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in data %}
+                <tr>
+                    <td>{{ producto.1 }}</td>
+                    <td>{{ producto.2 }}</td>
+                    <td>{{ producto.3 }}</td>
+                    <td>{{ producto.4 }}</td>
+                    <td>{{ producto.5 }}</td>
+                    <td>
+                        <a href="/actualizar?id={{ producto.0 }}" class="btn btn-primary">Actualizar</a>
+                        <button onclick='confirmarEliminacion("{{ producto.0  | safe }}")' class="btn btn-danger"> Eliminar </button>
+                    </td>
+                </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+        <form action="/exportar" method="post">
+            <input type="text" name="datos" value="{{data}}" style="display: none;" >
+            <button class="btn btn-danger">Exportar</button>
+        </form>
+        
+    </div>
+
+    <!-- Agregar enlace al archivo JS de Bootstrap al final del cuerpo del documento si es necesario -->
+
+
+
+    <script>
+    function confirmarEliminacion(link) {
+        // Muestra una alerta de confirmación
+        var confirmacion = confirm("¿Desea eliminar este elemento?");
+
+        // Si el usuario hace clic en "Aceptar", redirige la página
+        if (confirmacion) {
+            window.location.href = `/eliminar?id=${link}`; // Reemplaza con la URL de la página de redirección
+        }
+    }
+</script>
+</body>
+</html>

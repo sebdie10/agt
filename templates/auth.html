@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión</title>
+    <!-- Enlace a los estilos de Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Estilos CSS personalizados para el fondo de la imagen -->
+    <style>
+        body {
+            background-image: url('https://media.diariouno.com.ar/p/1f1a848b3f05dc427b4c58bda2900ce9/adjuntos/298/imagenes/005/886/0005886074/godoy-cruz-1jpg.jpg');
+            background-size: cover;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8); /* Fondo del formulario con opacidad */
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Iniciar Sesión</h2>
+        <form action="/login" method="POST">
+            <div class="form-group">
+                <label for="usuario">Usuario:</label>
+                <input type="text" class="form-control" id="usuario" name="usuario" required>
+            </div>
+            <div class="form-group">
+                <label for="contrasena">Contraseña:</label>
+                <input type="password" class="form-control" id="contrasena" name="contrasena" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+        </form>
+    </div>
+</body>
+</html>

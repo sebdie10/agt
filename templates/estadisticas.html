@@ -1,0 +1,82 @@
+{% extends 'plantilla.html' %}
+
+{% block head%}
+    <title>Estadisticas</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .contenido-principal {
+            margin-left: 250px; /* Ancho del menú lateral */
+            padding: 20px;
+        }
+    
+        a {
+            text-decoration: none; /* Elimina el subrayado */
+            color: inherit; /* Hereda el color del texto de su contenedor */
+        }
+    
+        /* Estilo para los enlaces cuando el cursor pasa sobre ellos */
+        a:hover {
+            color: white; /* Cambia el color del texto a blanco en el hover */
+        }
+    
+        .filtro{
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="contenido-principal">
+        <h2>Estadisticas</h2>
+            <div style="width: 900px; height: 500px;">
+                <canvas id="myChart"></canvas>
+            </div>
+            
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            
+            <script>
+                const ctx = document.getElementById('myChart');
+                var datosDesdeFlask = "{{ productos  | safe }}";
+                console.log(datosDesdeFlask);
+                var numeros = "{{ numeros  | safe }}";
+                numeros= JSON.parse(numeros);
+                var labels = datosDesdeFlask.replace("[","");
+                labels = labels.replace("]","")
+                
+                //labels = datosDesdeFlask.split(",");
+                labels = labels.split(",");
+                console.log(typeof(numeros));
+                // Obtén los datos de Flask
+            
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'tota de Stock disponible',
+                            data: numeros, // Usa los datos de Flask
+                            borderWidth: 1,
+                            backgroundColor: [
+                                'rgba(255, 0, 0, 0.5)',
+                                'rgba(0, 0, 255, 0.5)',
+                                'rgba(255, 255, 0, 0.5)',
+                                'rgba(0, 128, 0, 0.5)',
+                                'rgba(128, 0, 128, 0.5)',
+                                'rgba(255, 165, 0, 0.5)'
+                            ]
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            },
+                            x: {
+                                maxBarThickness: 50 // Ajusta el espaciado entre las etiquetas
+                            }
+                        }
+                    }
+                });
+            </script>
+    </div>
+{% endblock %}

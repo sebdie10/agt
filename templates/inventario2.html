@@ -1,0 +1,142 @@
+{% extends 'plantilla.html'%}
+{% block head %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+    .contenido-principal {
+        margin-left: 250px; /* Ancho del menú lateral */
+        padding: 20px;
+    }
+
+    a {
+        text-decoration: none; /* Elimina el subrayado */
+        color: inherit; /* Hereda el color del texto de su contenedor */
+    }
+
+    /* Estilo para los enlaces cuando el cursor pasa sobre ellos */
+    a:hover {
+        color: white; /* Cambia el color del texto a blanco en el hover */
+    }
+
+    .filtro{
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="contenido-principal">
+    <h2>Inventario</h2>
+    <input type="text" name="buscador" id="buscador" placeholder="Buscar...">
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th>producto</th>
+                <th>Marca</th>
+                <th>Stock</th>
+                <th>Ubicacion</th>
+                <th>nota</th>
+                <th>Control</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for producto in data %}
+            <tr class="articulo" id="row">
+                <td>{{ producto.1 }}</td>
+                <td>{{ producto.2 }}</td>
+                <td>{{ producto.3 }}</td>
+                <td>{{ producto.4 }}</td>
+                <td>{{ producto.5 }}</td>
+                <td>
+                    <a href="/actualizar?id={{ producto.0 }}" class="btn btn-primary">Actualizar</a>
+                    <button onclick='confirmarEliminacion("{{ producto.0  | safe }}")' class="btn btn-danger"> Eliminar </button>
+                </td>
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+    <form action="/exportar" method="post">
+        <input type="text" name="datos" value="{{data}}" style="display: none;" >
+        
+    </form>
+    <button class="btn btn-danger" onclick='esportar()'>Exportar</button>
+    <div id="prue"></div>
+</div>
+
+
+
+<!-- Agregar enlace al archivo JS de Bootstrap al final del cuerpo del documento si es necesario -->
+
+
+<script src="./js/inventario.js"></script>
+<script>
+
+function confirmarEliminacion(link) {
+    // Muestra una alerta de confirmación
+        var confirmacion = confirm("¿Desea eliminar este elemento?");
+
+        // Si el usuario hace clic en "Aceptar", redirige la página
+        if (confirmacion) {
+            window.location.href = `/eliminar?id=${link}`; // Reemplaza con la URL de la página de redirección
+        }
+    }
+    
+        // Función para filtrar elementos
+        function filtrarElementos(valor) {
+            document.querySelectorAll(".articulo").forEach(fruta => {
+                const contenido = fruta.textContent.toLowerCase();
+                if (contenido.includes(valor)) {
+                    fruta.classList.remove("filtro");
+                } else {
+                    fruta.classList.add("filtro");
+                }
+            });
+        }
+
+        // Agregar un event listener para el campo de búsqueda
+        const campoBusqueda = document.getElementById('buscador');
+        campoBusqueda.addEventListener("input", e => {
+            const valorBusqueda = e.target.value.toLowerCase();
+            filtrarElementos(valorBusqueda);
+        });
+
+        // Obtener la palabra de la URL y establecerla en el campo de búsqueda
+        const urlParams = new URLSearchParams(window.location.search);
+        const palabra = urlParams.get('search');
+        if (palabra) {
+            campoBusqueda.value = palabra;
+            filtrarElementos(palabra.toLowerCase());
+        }
+
+    var tabla = document.getElementsByClassName('articulo');
+    var table = []
+    for(var i = 0; i<tabla.length; i++){
+        if(!tabla[i].classList.contains('filtro')){
+            table.push(tabla[i]);
+        }
+    }
+
+    console.log(table[1].innerHTML);
+    
+    console.log(typeof(table[1]));;
+    
+    var prue = document.getElementById('prue');
+    //prue.innerHTML = `<a href='/prue?export=${table}'><button></button></a>`
+    
+    console.log(table);
+
+    function esportar(){
+        var campoBusquedaCompleto = document.getElementById('buscador');
+        var textoCampo=campoBusquedaCompleto.value;
+        console.log(textoCampo);
+        if(textoCampo != ""){
+            window.location.href = `/palabra/${textoCampo}`
+        }
+        
+
+    }
+
+</script>
+{% endblock %}
