@@ -24,7 +24,7 @@
     <div class="contenido-principal">
         <h2> Cargar elemento</h2>
         <div class="container mt-5">
-            <form action="/agregar" method="post">
+            <form action="/agregar" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="nombre">producto:</label>
                     <input type="text" class="form-control" name="producto" required>
@@ -40,18 +40,27 @@
                 <div class="form-group">
                     <label for="deposito">Ubicacion: </label>
                     <select name="deposito" id="" class="form-control">
-                        <option value="CAU">agt 1</option>
-                        <option value="Catastro">agt 2</option>
-                        <option value="Libertad">agt 3</option>
+                        <option value="agt 1">agt 1</option>
+                        <option value="agt 2">agt 2</option>
+                        <option value="agt 3">agt 3</option>
+                        <option value="Deposito">Deposito</option>
+                        <option value="Librero 1">Librero 1</option>
+                        <option value="Libertad">Libertad</option>
+                        <option value="servicios publicos">S. Publicos</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="modelo">Nota:</label>
-                    <input type="text" class="form-control" name="nota">
+                    <input type="text" class="form-control" name="nota" required>
 
                 </div>
+              <div class="form-group">
+                  <label for="modelo">imagen</label>
+                  <input type="file" class="form-control" name="imagen" placeholder="cargar imagen">
+
+              </div>
                 <button type="submit" class="btn btn-primary">Cargar</button>
-                <a href="/inventario" class="btn btn-primary">Ver inventario</a>
+                <a href="/" class="btn btn-primary">Ver inventario</a>
             </form>
         </div>
     </div>

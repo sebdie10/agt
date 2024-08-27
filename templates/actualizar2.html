@@ -2,6 +2,14 @@
 {% block head %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
     <style>
+      .imagen-con-zoom {
+        width: 200px; /* ajusta el tamaño según tus necesidades */
+        transition: transform 0.3s;
+      }
+
+      .imagen-con-zoom:hover {
+        transform: scale(1.8); /* el valor 1.2 indica el nivel de zoom */
+      }
             .contenido-principal {
         margin-left: 250px; /* Ancho del menú lateral */
         padding: 35px;
@@ -27,14 +35,27 @@
     <div class="contenido-principal">
     <div class="container">
         <h1 class="mt-5">Actualizar</h1>
-
-        <form class="mt-4" action="/actualizar" method="post">
+        {% set path = 'static/img/productos/' %}
+        {% set img = dato[5] %}
+        <form class="mt-4" action="/actualizar" method="post" enctype="multipart/form-data">
             <input type="text" value="{{dato.0}}" style="display: none;" name="id">
-            
+            <div style="display: inline-flex;">
             <div class="mb-3">
                 <label for="nombre" class="form-label">producto</label>
-                <input type="text" value="{{dato.1}}" name="producto" class="form-control">
+                <input style="width: 270px;" type="text" value="{{dato.1}}" name="producto" class="form-control">
             </div>
+            {% if dato[6] == None %}
+            <div class="form-group">
+                <label for="modelo">imagen</label>
+                <input  type="file" class="form-control" name="imagen" placeholder="cargar imagen">
+            </div>
+            {% endif %}
+            {% if dato[6] != None %}
+            <div style="height: 5%; width: 5%;">
+                <img src="{{path}}{{dato.6}}" alt="" class="imagen-con-zoom" style="height: 160px; width: 160px; margin-left: 120px;">
+            </div>
+            {% endif %}
+        </div>
             <div class="mb-3">
                 <label for="modelo" class="form-label">Marca</label>
                 <input type="text" value="{{dato.2}}" name="marca" class="form-control">
@@ -55,12 +76,38 @@
 
             <div class="mb-3">
                 <label for="nserie" class="form-label">nota</label>
-                <input type="text" value="{{dato.5}}" name="nota" class="form-control">
+                <input type="text" name="nota" class="form-control" value="" required>
             </div>
 
             <button type="submit" class="btn btn-primary">Actualizar</button>
             <a href="/" class="btn btn-danger">Cancelar</a>
         </form>
+      <br>
+      <br>
+      <br>
+      <h2>Notas</h2>
+      <table class="table mt-4">
+      <thead>
+          <tr>
+              <th>fecha</th>
+              <th>nota</th>
+              <th>tecnico</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for nota in notas %}
+          <tr class="articulo" id="row">
+              <td>{{ nota.2 }}</td>
+              <td>{{ nota.3 }}</td>
+              <td>{{ nota.4 }}</td>
+          </tr>
+          {% endfor %}
+        <tr>
+            <td>origen</td>
+            <td>{{dato.5}}</td>
+        </tr>
+      </tbody>
+      </table>
     </div>
     </div>
     <!-- Agregar la referencia a Bootstrap JS al final del cuerpo del documento -->
@@ -82,5 +129,13 @@
             var valor = parseInt(inputNumero.value);
             inputNumero.value = valor + 1;
         }
+
+        window.addEventListener("keypress", function(event){
+        if (event.keyCode == 13){
+            event.preventDefault();
+            }
+        }, false);
+
     </script>
+
 {% endblock %}
