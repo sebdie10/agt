@@ -70,7 +70,10 @@ def index():
   if 'operador' in session:
     user_agent = request.headers.get('User-Agent')
     if 'Mobile' in user_agent:
-        return flask.render_template('inventario-mobile.html')
+        cur = db.cursor()
+        cur.execute('select * from inventario where stock >= 1')
+        data = cur.fetchall()
+        return flask.render_template('inventario-mobile.html', data=data)
     else:
       if 'stock_cero' in  session and session['stock_cero'] == 'desactivado':
         cur = db.cursor()
@@ -90,6 +93,8 @@ def index():
         return flask.render_template('inventario2.html', data=data, stock='activado')
   else:
       return redirect('/log')
+
+
 
 
 

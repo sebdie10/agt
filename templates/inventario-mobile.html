@@ -1,70 +1,49 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { PlusCircle, Pencil, Trash2 } from "lucide-react"
-
-// Tipo para los elementos del CRUD
-type Item = {
-  id: number
-  name: string
-  location: string
-  quantity: number
-  imageUrl: string
-}
-
-// Datos de ejemplo
-const items: Item[] = [
-  {
-    id: 1,
-    name: "Producto A",
-    location: "Almacén 1",
-    quantity: 50,
-    imageUrl: "/placeholder.svg?height=100&width=100"
-  },
-  {
-    id: 2,
-    name: "Producto B",
-    location: "Almacén 2",
-    quantity: 30,
-    imageUrl: "/placeholder.svg?height=100&width=100"
-  },
-  // Agrega más elementos aquí...
-]
-
-export default function CRUDList() {
-  return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Lista de Productos</h1>
-      <Button className="mb-4">
-        <PlusCircle className="mr-2 h-4 w-4" /> Agregar Producto
-      </Button>
-      <div className="space-y-4">
-        {items.map((item) => (
-          <Card key={item.id} className="overflow-hidden">
-            <CardContent className="p-0">
-              <div className="flex flex-row-reverse items-center">
-                <img
-                  src={item.imageUrl}
-                  alt={item.name}
-                  className="w-24 h-24 object-cover"
-                />
-                <div className="flex-1 p-4">
-                  <h2 className="text-lg font-semibold">{item.name}</h2>
-                  <p className="text-sm text-gray-600">{item.location}</p>
-                  <p className="text-sm">Cantidad: {item.quantity}</p>
-                  <div className="mt-2 space-x-2">
-                    <Button size="sm" variant="outline">
-                      <Pencil className="mr-2 h-4 w-4" /> Editar
-                    </Button>
-                    <Button size="sm" variant="outline" className="text-red-600 hover:text-red-700">
-                      <Trash2 className="mr-2 h-4 w-4" /> Eliminar
-                    </Button>
-                  </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Productos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-bold mb-4">Lista de Productos</h1>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Agregar Producto
+        </button>
+        <div class="space-y-4">
+            {% for item in data %}
+            <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                <div class="flex flex-row-reverse items-center">
+                    <img src="{{ item.image_url }}" alt="{{ item.name }}" class="w-24 h-24 object-cover">
+                    <div class="flex-1 p-4">
+                        <h2 class="text-lg font-semibold">{{ item.1 }}</h2>
+                        <p class="text-sm text-gray-600">{{ item.location }}</p>
+                        <p class="text-sm">Cantidad: {{ item.quantity }}</p>
+                        <div class="mt-2 space-x-2">
+                            <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-2 rounded text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                                Editar
+                            </button>
+                            <button class="bg-red-200 hover:bg-red-300 text-red-800 font-bold py-1 px-2 rounded text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-  )
-}
+</body>
+</html>
