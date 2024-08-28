@@ -6,6 +6,11 @@
     <title>Lista de Productos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .filtro{
+        display: none;
+    }
+    </style>
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto p-4">
@@ -16,23 +21,27 @@
             </svg>
             Agregar Producto
         </button>
+        <input type="text" name="buscador" id="buscador" class="" placeholder="Buscar...">
         <div class="space-y-4">
+            {% set path = 'static/img/productos/' %}
             {% for item in data %}
+            <div class="articulo">
             <div class="bg-white shadow-md rounded-lg overflow-hidden">
                 <div class="flex flex-row-reverse items-center">
-                    <img src="{{ item.image_url }}" alt="{{ item.name }}" class="w-24 h-24 object-cover">
+                    <img src="{{path}}{{item.6}}" alt="" class="w-24 h-24 object-cover">
                     <div class="flex-1 p-4">
                         <h2 class="text-lg font-semibold">{{ item.1 }}</h2>
                         <p class="text-sm text-gray-600">{{ item.location }}</p>
-                        <p class="text-sm">Cantidad: {{ item.quantity }}</p>
+                        <p class="text-sm">Cantidad: {{ item.3 }}</p>
                         <div class="mt-2 space-x-2">
-                            <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-2 rounded text-sm">
+                            <a href="/actualizar?id={{ item.0 }}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-2 rounded text-sm">
+                            
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                 </svg>
                                 Editar
-                            </button>
-                            <button class="bg-red-200 hover:bg-red-300 text-red-800 font-bold py-1 px-2 rounded text-sm">
+                            </a>
+                            <button class="bg-red-200 hover:bg-red-300 text-red-800 font-bold py-1 px-2 rounded text-sm" onclick='confirmarEliminacion("{{ item.0  | safe }}")'>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                 </svg>
@@ -42,8 +51,44 @@
                     </div>
                 </div>
             </div>
+            </div>
             {% endfor %}
         </div>
     </div>
+
+
+    <script>
+
+
+        // Función para filtrar elementos
+        function filtrarElementos(valor) {
+            document.querySelectorAll(".articulo").forEach(fruta => {
+                const contenido = fruta.textContent.toLowerCase();
+                if (contenido.includes(valor)) {
+                    fruta.classList.remove("filtro");
+                } else {
+                    fruta.classList.add("filtro");
+            }
+            });
+        }
+
+        // Agregar un event listener para el campo de búsqueda
+        const campoBusqueda = document.getElementById('buscador');
+        campoBusqueda.addEventListener("input", e => {
+            const valorBusqueda = e.target.value.toLowerCase();
+            filtrarElementos(valorBusqueda);
+        });
+
+
+        function confirmarEliminacion(link) { //Eliminar un elemento de la base de datos.
+        // Muestra una alerta de confirmación
+        var confirmacion = confirm("¿Desea eliminar este elemento?");
+
+        // Si el usuario hace clic en "Aceptar", redirige la página
+        if (confirmacion) {
+            window.location.href = `/eliminar?id=${link}`; // Reemplaza con la URL de la página de redirección
+        }
+    }
+    </script>
 </body>
 </html>

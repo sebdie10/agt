@@ -4,10 +4,10 @@ import sqlite3
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
+from dbmanage import *
 
 
 app = flask.Flask(__name__)
-db = sqlite3.connect('db/agtdb.db', check_same_thread=False)
 
 
 app.secret_key = 'cortina'
@@ -65,38 +65,44 @@ def not_found(error):
 
 ''' inventario '''  
 
-@app.route('/') #pagina de inicio y carga de la tabla inventario
+@app.route('/') # Pagina de inicio y carga de la tabla inventario
 def index():
-  if 'operador' in session:
+  if 'operador' in session: # Comprueba que exista un usuario logueado
     user_agent = request.headers.get('User-Agent')
-    if 'Mobile' in user_agent:
-        cur = db.cursor()
-        cur.execute('select * from inventario where stock >= 1')
-        data = cur.fetchall()
-        return flask.render_template('inventario-mobile.html', data=data)
+    if 'Mobile' in user_agent: 
+        return flask.render_template('inventario-mobile.html', data=get_index(1))
     else:
       if 'stock_cero' in  session and session['stock_cero'] == 'desactivado':
-        cur = db.cursor()
-        cur.execute('select * from inventario where stock >= 1')
-        data = cur.fetchall()
-        return flask.render_template('inventario2.html', data=data, stock='desactivado')
+        # Ocultar stock en 0 ----- con la variable stock desactivada.
+
+        return flask.render_template('inventario2.html', data=get_index(1), stock='desactivado')
       elif 'stock_cero' in session and session['stock_cero']== 'activado':
-        cur = db.cursor()
-        cur.execute('select * from inventario')
-        data = cur.fetchall()
-        #print(data)
-        return flask.render_template('inventario2.html', data=data, stock='activado')
+        # Imprime toda lalista de productos incluyendo los que tiene estock en cero.
+        # Con la variable de stock cero activada.
+
+        return flask.render_template('inventario2.html', data=get_index(0), stock='activado')
       else:
-        cur = db.cursor()
-        cur.execute('select * from inventario')
-        data = cur.fetchall()
-        return flask.render_template('inventario2.html', data=data, stock='activado')
+        # imprime toda lalista de productos incluyendo los que tiene estock en cero.
+        # con la variable de stock cero activada.
+
+        return flask.render_template('inventario2.html', data=get_index(0), stock='activado')
   else:
+      # Si el usuario no se encuentra logueado.
+      # De manera automatica se lo rediriguira a la pagina de Login.
+      
       return redirect('/log')
 
 
 
-
+''' paginas de diferentes agts '''
+@app.route('/ubicacion/<ubi>')
+def ubicacion(ubi):
+  ubi = str(ubi)
+  user_agent = request.headers.get('User-Agent')
+  if 'Mobile' in user_agent:
+    return flask.render_template('inventario-mobile.html', data=get_ubicacion(ubi))
+  else:
+    return flask.render_template('inventario2.html', data=get_ubicacion(ubi))
 
 
 
@@ -191,9 +197,7 @@ def update():
 def eliminar():
   id = request.args.get('id')
   id = int(id)
-  cur = db.cursor()
-  cur.execute(f"delete FROM inventario WHERE id={id}")
-  db.commit()
+  delete(id)
   return redirect('/')
 
 
